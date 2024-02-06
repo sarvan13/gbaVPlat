@@ -2,3 +2,6 @@ tonc/
 visualboyadvance-m*
 *.elf
 *.gba
+*.o
+*.d
+*.map
