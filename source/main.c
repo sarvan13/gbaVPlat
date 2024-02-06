@@ -42,12 +42,11 @@ void loop()
 	obj_set_attr(platform, 
 		ATTR0_WIDE,				
 		ATTR1_SIZE_32x8,				
-		ATTR2_PALBANK(pb) | tid);		
+		ATTR2_PALBANK(pb) | 4);		
 
-	platform->attr2 = ATTR2_BUILD(4, pb, 0);
-	obj_set_pos(platform, 96, 32);
+	platform->attr2 = ATTR2_BUILD(4, pb, 0); 
 
-	detectCollision(platform, &obj_buffer[0], 2);
+	obj_set_pos(platform, 96, 100);
 
 	while(1)
 	{
@@ -82,6 +81,8 @@ void loop()
 		// Hey look, it's one of them build macros!
 		cube->attr2= ATTR2_BUILD(tid, pb, 0);
 		obj_set_pos(cube, x, y);
+
+		detectCollision(cube, &obj_buffer[0], 2);
 
 		oam_copy(oam_mem, obj_buffer, 2);	// only need to update one
 	}
