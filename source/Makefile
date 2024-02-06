@@ -11,10 +11,10 @@ PATH := $(DEVKITARM)/bin:$(PATH)
 
 # --- Project details -------------------------------------------------
 
-PROJ    := obj_demo
+PROJ    := main
 TITLE   := $(PROJ)
 
-COBJS   := obj_demo.o toolbox.o Cube.o
+COBJS   := main.o toolbox.o Cube.o player.o
 
 OBJS	:= $(COBJS)
 

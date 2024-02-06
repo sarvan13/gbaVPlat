@@ -32,6 +32,9 @@ typedef unsigned char  u8,  byte;
 typedef unsigned short u16, hword;
 typedef unsigned int   u32, word;
 typedef unsigned long long u64;
+typedef unsigned char bool;
+static const bool False = 0;
+static const bool True = 1;
 
 typedef signed char  s8;
 typedef signed short s16; 

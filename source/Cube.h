@@ -17,6 +17,9 @@
 #ifndef GRIT_CUBE_H
 #define GRIT_CUBE_H
 
+#define PlatTilesLen 128
+extern const unsigned short PlatTiles[64];
+
 #define CubeTilesLen 128
 extern const unsigned short CubeTiles[64];
 
