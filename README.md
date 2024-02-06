@@ -1,4 +1,7 @@
 # gbaVPlat 
+A simple vertical platforming game that I am developing for the Gameboy Advanced. 
+
+Still in the early development stages.
 
 ## References
 Tonc: https://coranac.com/tonc/text/toc.htm
