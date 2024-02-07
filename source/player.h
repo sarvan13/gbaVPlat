@@ -32,11 +32,15 @@ INLINE enum spriteSize getSpriteSize(OBJ_ATTR* object);
 
 INLINE enum spriteSize getSpriteSize(OBJ_ATTR* object)
 {
-    return (object->attr0 >> 14 | ((object->attr1 >> 14) << 2));
+    return (object->attr1 >> 14 | ((object->attr0 >> 14) << 2));
 }
 
 OBJ_ATTR* detectCollision(OBJ_ATTR* player, OBJ_ATTR* objectList, int objectCount);
 
 OBJ_POS* getObjectPosition(OBJ_ATTR* player);
+
+bool isGrounded(OBJ_ATTR* player, OBJ_ATTR* objectList, int objectCount);
+
+void testSpriteSizeEnum(OBJ_ATTR* player);
 
 #endif

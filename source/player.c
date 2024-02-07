@@ -1,4 +1,13 @@
 #include "player.h"
+#include <stdlib.h>
+
+void testSpriteSizeEnum(OBJ_ATTR* player)
+{
+    if (getSpriteSize(player) == SPRITE_SIZE_16X16)
+    {
+        obj_set_pos(player, 20, 20);
+    }
+}
 
 // Creates an OBJ_POS struct on the heap - Memory management must be handled by the user
 OBJ_POS* getObjectPosition(OBJ_ATTR* player)
@@ -75,8 +84,8 @@ OBJ_ATTR* detectCollision(OBJ_ATTR* player, OBJ_ATTR* objectList, int objectCoun
                 playerPosition->y < objectPosition->y + objectPosition->height &&
                 playerPosition->y + playerPosition->height > objectPosition->y)
             {
-                objectList[i].attr0 = (objectList[i].attr0 & ~ATTR0_Y_MASK) | 15;
-                objectList[i].attr1 = (objectList[i].attr1 & ~ATTR1_X_MASK) | 15;
+                free(objectPosition);
+                return &objectList[i];
             }
             free(objectPosition);
         }
@@ -84,4 +93,38 @@ OBJ_ATTR* detectCollision(OBJ_ATTR* player, OBJ_ATTR* objectList, int objectCoun
 
     free(playerPosition);
     return NULL;
+}
+
+bool isGrounded(OBJ_ATTR* player, OBJ_ATTR* objectList, int objectCount)
+{
+    OBJ_POS *playerPosition = getObjectPosition(player);
+    int playerBottom = playerPosition->y + playerPosition -> height;
+
+    if (playerBottom == 160) 
+    {
+        free(playerPosition);
+        return 1;
+    }
+    else
+    {
+        OBJ_ATTR boxCast = {player->attr0, player->attr1, player->attr2, 0};
+        boxCast.attr0 = BFN_SET(boxCast.attr0, playerPosition->y + 7, ATTR0_Y);
+        OBJ_ATTR *intersectedObj = detectCollision(&boxCast, objectList + 1, objectCount - 1);
+
+        if (intersectedObj)
+        { 
+            OBJ_POS *intersectedObjPos = getObjectPosition(intersectedObj);
+            if (playerBottom == intersectedObjPos->y)
+            {
+                free(playerPosition);
+                free(intersectedObjPos);
+                return 1;
+            }
+            
+            free(intersectedObjPos);
+        }
+    }
+    free(playerPosition);
+
+    return 0;
 }

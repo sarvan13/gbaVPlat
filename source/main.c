@@ -22,10 +22,11 @@ OBJ_AFFINE *obj_aff_buffer= (OBJ_AFFINE*)obj_buffer;
 void loop()
 {
 	int x= 96, y= 144;
-	int ymax = y;
 	bool jump = 0;
+	bool grounded = 1;
 	u8 jumpStrength = 2;
 	u8 fallStrength = 1;
+	int groundedCount = 0;
 	u32 tid= 0, pb= 0;		// tile id, pal-bank
 
 	OBJ_ATTR *cube= &obj_buffer[0];
@@ -56,33 +57,15 @@ void loop()
 		// move left/right
 		x += 2*key_tri_horz();
 
+		grounded = isGrounded(cube, &obj_buffer[0], 2);
 		// move up/down
 		jump = KEY_DOWN_NOW(KEY_UP) ?  1: 0;
-		y = jump ? y - jumpStrength: y + fallStrength;
-		y = (y > ymax) ? ymax : y;
-
-
-		// increment/decrement starting tile with R/L
-		tid += bit_tribool(key_hit(-1), KI_R,  KI_L);
-
-		// flip
-		if(key_hit(KEY_A))	// horizontally
-			cube->attr1 ^= ATTR1_HFLIP;
-		if(key_hit(KEY_B))	// vertically
-			cube->attr1 ^= ATTR1_VFLIP;
-		
-		// make it glow (via palette swapping)
-		pb= key_is_down(KEY_SELECT) ? 1 : 0;
-
-		// toggle mapping mode
-		if(key_hit(KEY_START))
-			REG_DISPCNT ^= DCNT_OBJ_1D;
+		y =  grounded ? y : y + fallStrength;
+		if (jump) y = y - jumpStrength;	
 
 		// Hey look, it's one of them build macros!
 		cube->attr2= ATTR2_BUILD(tid, pb, 0);
 		obj_set_pos(cube, x, y);
-
-		detectCollision(cube, &obj_buffer[0], 2);
 
 		oam_copy(oam_mem, obj_buffer, 2);	// only need to update one
 	}
